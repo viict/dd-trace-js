@@ -74,6 +74,8 @@ class AgentlessCiVisibilityEncoder extends AgentEncoder {
     this._encodeMap(bytes, content.meta)
     this._encodeString(bytes, 'metrics')
     this._encodeMap(bytes, content.metrics)
+    this._encodeString(bytes, 'span_links')
+    this._encodeArray(bytes, content.links)
   }
 
   _encodeTestModule (bytes, content) {
@@ -103,6 +105,8 @@ class AgentlessCiVisibilityEncoder extends AgentEncoder {
     this._encodeMap(bytes, content.meta)
     this._encodeString(bytes, 'metrics')
     this._encodeMap(bytes, content.metrics)
+    this._encodeString(bytes, 'span_links')
+    this._encodeArray(bytes, content.links)
   }
 
   _encodeTestSession (bytes, content) {
@@ -129,6 +133,8 @@ class AgentlessCiVisibilityEncoder extends AgentEncoder {
     this._encodeMap(bytes, content.meta)
     this._encodeString(bytes, 'metrics')
     this._encodeMap(bytes, content.metrics)
+    this._encodeString(bytes, 'span_links')
+    this._encodeArray(bytes, content.links)
   }
 
   _encodeEventContent (bytes, content) {
@@ -198,6 +204,8 @@ class AgentlessCiVisibilityEncoder extends AgentEncoder {
     this._encodeMap(bytes, content.meta)
     this._encodeString(bytes, 'metrics')
     this._encodeMap(bytes, content.metrics)
+    this._encodeString(bytes, 'span_links')
+    this._encodeArray(bytes, content.links)
   }
 
   _encodeEvent (bytes, event) {
