@@ -15,6 +15,7 @@ const ALLOWED_CONTENT_TYPES = ['test_session_end', 'test_module_end', 'test_suit
 const TEST_SUITE_KEYS_LENGTH = 12
 const TEST_MODULE_KEYS_LENGTH = 11
 const TEST_SESSION_KEYS_LENGTH = 10
+const TEST_AND_SPAN_KEYS_LENGTH = 11
 
 const INTAKE_SOFT_LIMIT = 2 * 1024 * 1024 // 2MB
 
@@ -132,9 +133,7 @@ class AgentlessCiVisibilityEncoder extends AgentEncoder {
   }
 
   _encodeEventContent (bytes, content) {
-    const keysLength = Object.keys(content).length
-
-    let totalKeysLength = keysLength
+    let totalKeysLength = TEST_AND_SPAN_KEYS_LENGTH
     if (content.meta.test_session_id) {
       totalKeysLength = totalKeysLength + 1
     }
@@ -142,6 +141,9 @@ class AgentlessCiVisibilityEncoder extends AgentEncoder {
       totalKeysLength = totalKeysLength + 1
     }
     if (content.meta.test_suite_id) {
+      totalKeysLength = totalKeysLength + 1
+    }
+    if (content.type) {
       totalKeysLength = totalKeysLength + 1
     }
     this._encodeMapPrefix(bytes, totalKeysLength)
