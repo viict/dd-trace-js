@@ -11,6 +11,7 @@ const docker = require('./docker')
 const { httpAgent, httpsAgent } = require('./agents')
 const { storage } = require('../../../../datadog-core')
 const log = require('../../log')
+const zlib = require('zlib')
 
 const maxActiveRequests = 8
 const containerId = docker.id()
@@ -93,15 +94,21 @@ function request (data, options, callback) {
   options.agent = isSecure ? httpsAgent : httpAgent
 
   const onResponse = res => {
-    let responseData = ''
+    const chunks = []
 
     res.setTimeout(timeout)
 
-    res.on('data', chunk => { responseData += chunk })
+    res.on('data', chunk => { chunks.push(chunk) })
     res.on('end', () => {
+      const buffer = Buffer.concat(chunks)
       activeRequests--
-
       if (res.statusCode >= 200 && res.statusCode <= 299) {
+        let responseData = ''
+        if (res.headers['content-encoding'] === 'gzip') {
+          responseData = zlib.gunzipSync(buffer).toString()
+        } else {
+          responseData = buffer.toString()
+        }
         callback(null, responseData, res.statusCode)
       } else {
         let errorMessage = ''
@@ -114,8 +121,8 @@ function request (data, options, callback) {
         } catch (e) {
           // ignore error
         }
-        if (responseData) {
-          errorMessage += ` Response from the endpoint: "${responseData}"`
+        if (buffer.toString()) {
+          errorMessage += ` Response from the endpoint: "${buffer.toString()}"`
         }
         const error = new Error(errorMessage)
         error.status = res.statusCode
