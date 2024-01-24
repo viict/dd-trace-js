@@ -102,7 +102,7 @@ module.exports.setup = function (build) {
       }
 
       while (!fs.existsSync(path.join(pathToPackageJson, 'package.json'))) {
-        pathToPackageJson = path.dirname(pathToPackageJson);
+        pathToPackageJson = path.dirname(pathToPackageJson)
       }
 
       const packageJson = require(path.join(pathToPackageJson, 'package.json'))
