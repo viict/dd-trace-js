@@ -89,11 +89,11 @@ module.exports.setup = function (build) {
 
       let pathToPackageJson
       try {
-        pathToPackageJson = require.resolve(`${extracted.pkg}/package.json`, { paths: [ args.resolveDir ] })
+        pathToPackageJson = require.resolve(`${extracted.pkg}`, { paths: [ args.resolveDir ] })
       } catch (err) {
         if (err.code === 'MODULE_NOT_FOUND') {
           if (!internal) {
-            console.warn(`MISSING: Unable to find "${extracted.pkg}/package.json". Is the package dead code?`)
+            console.warn(`MISSING: Unable to find "${extracted.pkg}". Is the package dead code?`)
           }
           return
         } else {
@@ -101,7 +101,11 @@ module.exports.setup = function (build) {
         }
       }
 
-      const packageJson = require(pathToPackageJson)
+      while (!fs.existsSync(path.join(pathToPackageJson, 'package.json'))) {
+        pathToPackageJson = path.dirname(pathToPackageJson);
+      }
+
+      const packageJson = require(path.join(pathToPackageJson, 'package.json'))
 
       if (DEBUG) console.log(`RESOLVE: ${args.path}@${packageJson.version}`)
 
