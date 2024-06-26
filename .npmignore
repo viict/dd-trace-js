@@ -12,7 +12,9 @@
 !README.md
 !index.d.ts
 !index.js
+!esbuild.d.ts
 !esbuild.js
+!init.d.ts
 !init.js
 !loader-hook.mjs
 !package.json

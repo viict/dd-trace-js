@@ -1,9 +1,16 @@
 {
   "name": "dd-trace",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "Datadog APM tracing client for JavaScript",
   "main": "index.js",
   "typings": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./esbuild": "./esbuild.js",
+    "./init": "./init.js",
+    "./loader-hook.mjs": "./loader-hook.mjs",
+    "./version": "./version.js"
+  },
   "scripts": {
     "preinstall": "node scripts/preinstall.js",
     "bench": "node benchmark",
@@ -87,10 +94,7 @@
     "jest-docblock": "^29.7.0",
     "koalas": "^1.0.2",
     "limiter": "1.1.5",
-    "lodash.kebabcase": "^4.1.1",
-    "lodash.pick": "^4.4.0",
     "lodash.sortby": "^4.7.0",
-    "lodash.uniq": "^4.5.0",
     "lru-cache": "^7.14.0",
     "methods": "^1.1.2",
     "module-details-from-path": "^1.0.3",
