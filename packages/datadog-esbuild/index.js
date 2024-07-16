@@ -94,14 +94,14 @@ module.exports.setup = function (build) {
     ) {
       // The file namespace is used when requiring files from disk in userland
 
-      let pathToPackageJson
+      let pathToPackage
       try {
-        pathToPackageJson = require.resolve(`${extracted.pkg}/package.json`, { paths: [args.resolveDir] })
+        pathToPackage = require.resolve(`${extracted.pkg}`, { paths: [args.resolveDir] })
       } catch (err) {
         if (err.code === 'MODULE_NOT_FOUND') {
           if (!internal) {
             if (DEBUG) {
-              console.warn(`Warning: Unable to find "${extracted.pkg}/package.json".` +
+              console.warn(`Warning: Unable to find "${extracted.pkg}".` +
               "Unless it's dead code this could cause a problem at runtime.")
             }
           }
@@ -111,7 +111,13 @@ module.exports.setup = function (build) {
         }
       }
 
-      const packageJson = require(pathToPackageJson)
+      // Walk upwards in the package tree until the package.json is found
+      let pathToPackageJson = pathToPackage;
+      while (!fs.existsSync(path.join(pathToPackageJson, 'package.json'))) {
+        pathToPackageJson = path.dirname(pathToPackageJson)
+      }
+
+      const packageJson = require(path.join(pathToPackageJson, 'package.json'))
 
       if (DEBUG) console.log(`RESOLVE: ${args.path}@${packageJson.version}`)
 
