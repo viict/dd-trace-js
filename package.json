@@ -4,6 +4,13 @@
   "description": "Datadog APM tracing client for JavaScript",
   "main": "index.js",
   "typings": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./esbuild": "./esbuild.js",
+    "./init": "./init.js",
+    "./loader-hook.mjs": "./loader-hook.mjs",
+    "./version": "./version.js"
+  },
   "scripts": {
     "preinstall": "node scripts/preinstall.js",
     "bench": "node benchmark",
